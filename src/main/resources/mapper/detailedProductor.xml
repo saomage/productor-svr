@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hfut.shopping.mapper.ProductorMapper">
+
+	<resultMap id="productor"
+		type="com.hfut.shopping.domain.Productor">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="phone" column="phone" />
+		<result property="email" column="email" />
+		<result property="aboutme" column="aboutme" />
+		<result property="passwd" column="passwd" />
+		<result property="type" column="type" />
+		<result property="avatar" column="avatar" />
+		<result property="enable" column="enable" />
+		<collection property="shops"
+			ofType="com.hfut.shopping.domain.Shop" column="id"
+			select="selectShop"></collection>
+	</resultMap>
+
+	<resultMap type="com.hfut.shopping.domain.Shop" id="shop">
+		<id property="id" column="shop_id" />
+		<result property="discountStrategy"
+			column="shop_discount_strategy" />
+		<result property="name" column="shop_name" />
+		<result property="address" column="shop_address" />
+		<result property="phone" column="shop_phone" />
+		<result property="introduce" column="shop_introduce" />
+		<result property="avatar" column="shop_avatar" />
+		<result property="isShopping" column="shop_isshopping" />
+		<result property="countPay" column="shop_count_pay" />
+		<collection property="commoditys"
+			ofType="com.hfut.shopping.domain.Commodity" column="shop_id"
+			select="selectCommodity"></collection>
+	</resultMap>
+
+	<resultMap type="com.hfut.shopping.domain.Commodity"
+		id="commodity">
+		<id property="id" column="commodity_id" />
+		<result property="name" column="commodity_name" />
+		<result property="introduce" column="commodity_introduce" />
+		<result property="avatar" column="commodity_avatar" />
+		<result property="type" column="commodity_type" />
+		<result property="price" column="commodity_price" />
+	</resultMap>
+
+	<sql id="productorField">
+		id,
+		name ,
+		phone ,
+		email ,
+		aboutme,
+		passwd ,
+		type,
+		avatar,
+		enable
+	</sql>
+
+	<sql id="shopField">
+		shop_id,
+		shop_discount_strategy ,
+		shop_name ,
+		shop_address ,
+		shop_phone,
+		shop_introduce ,
+		shop_avatar,
+		shop_isshopping,
+		shop_count_pay
+	</sql>
+
+	<sql id="commodityField">
+		commodity_id ,
+		commodity_name ,
+		commodity_introduce ,
+		commodity_avatar ,
+		commodity_type ,
+		commodity_price
+	</sql>
+
+	<select id="selectProductor" resultMap="productor">
+		select
+		<include refid="productorField" />
+		from productor
+		<where>
+			<if test="id != null and id != 0">
+				and id = #{id}
+			</if>
+			<!-- <if test="name != null and name !='' "> and shop_name = #{name} </if> -->
+		</where>
+		limit 1
+	</select>
+
+	<select id="selectShop" resultMap="shop">
+		select
+		<include refid="shopField" />
+		from shop
+		<where>
+			shop_productor_id = #{id} and shop_isshopping = 1
+		</where>
+	</select>
+
+	<select id="selectCommodity" resultMap="commodity">
+		select
+		<include refid="commodityField" />
+		from commodity
+		<where>
+			commodity_shop_id = #{shop_id}
+		</where>
+	</select>
+
+</mapper>

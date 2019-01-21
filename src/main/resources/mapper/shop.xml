@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hfut.shopping.mapper.ShopMapper">
+   
+   <update id="update">
+      update shop
+      <set>
+         <if test="name !=null and name != '' ">
+              shop_name = #{name},
+         </if>
+         <if test="address !=null and address != '' ">
+             shop_address = #{address},
+         </if>
+         <if test="phone !=null and phone != '' ">
+             shop_phone = #{phone},
+         </if>
+         <if test="introduce !=null and introduce != '' ">
+             shop_introduce = #{introduce},
+         </if>
+         <if test="avatar !=null and avatar != '' ">
+             shop_avatar = #{avatar},
+         </if>
+         <if test="isShopping !=null and isShopping != '' ">
+              shop_isShopping = #{isShopping},
+         </if>
+         <if test="countPay !=null and countPay != '' ">
+              shop_count_pay = #{countPay},
+         </if>
+         <if test="discountStrategy !=null and discountStrategy != '' ">
+              shop_discount_strategy = #{discountStrategy}
+         </if>
+      </set>
+      where shop_id = #{id}
+   </update>
+   
+   <delete id="delete">
+     delete from shop 
+     where shop_id = #{id}
+   </delete>
+  
+</mapper>
